@@ -1,0 +1,68 @@
+name: Build Android APKs
+
+on:
+  push:
+    branches:
+      - main
+      - 'feature/**'
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build ${{ matrix.variant_name }} APK
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - variant_name: app1
+            application_id: com.mhasanzare82.crypto.app1
+            artifact_name: 2app-app1-apk
+            output_name: 2app-app1-debug.apk
+          - variant_name: app2
+            application_id: com.mhasanzare82.crypto.app2
+            artifact_name: 2app-app2-apk
+            output_name: 2app-app2-debug.apk
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.41.0'
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Analyze Dart code
+        run: flutter analyze
+
+      - name: Build APK
+        env:
+          APP_APPLICATION_ID: ${{ matrix.application_id }}
+        run: flutter build apk --debug --build-name=1.0.0 --build-number=1
+
+      - name: Rename APK
+        run: cp build/app/outputs/flutter-apk/app-debug.apk ${{ matrix.output_name }}
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact_name }}
+          path: ${{ matrix.output_name }}
+          if-no-files-found: error
