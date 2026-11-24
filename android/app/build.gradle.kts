@@ -15,10 +15,10 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.example.exm1"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://flutter.dev/to/review-gradle-config.
+        // Allow CI to build two independently installable variants from the same source.
+        applicationId = providers.gradleProperty("appApplicationId")
+            .orElse("com.example.exm1")
+            .get()
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
@@ -27,8 +27,7 @@ android {
 
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
+            // Signing with the debug key for now, so release builds remain runnable in development.
             signingConfig = signingConfigs.getByName("debug")
         }
     }
