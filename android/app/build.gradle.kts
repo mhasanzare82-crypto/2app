@@ -16,6 +16,7 @@ android {
 
     defaultConfig {
         // CI sets this per build so both APKs can be installed side by side.
+        // The namespace stays fixed; only the installable application ID changes.
         applicationId = System.getenv("APP_APPLICATION_ID") ?: "com.example.exm1"
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
