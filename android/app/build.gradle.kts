@@ -15,10 +15,8 @@ android {
     }
 
     defaultConfig {
-        // Allow CI to build two independently installable variants from the same source.
-        applicationId = providers.gradleProperty("appApplicationId")
-            .orElse("com.example.exm1")
-            .get()
+        // CI sets this per build so both APKs can be installed side by side.
+        applicationId = System.getenv("APP_APPLICATION_ID") ?: "com.example.exm1"
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
