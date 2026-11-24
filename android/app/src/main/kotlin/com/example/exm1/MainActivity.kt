@@ -6,7 +6,6 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.Drawable
 import android.net.Uri
-import android.os.Bundle
 import android.provider.OpenableColumns
 import android.util.Base64
 import androidx.annotation.NonNull
