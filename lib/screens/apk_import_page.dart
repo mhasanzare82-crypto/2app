@@ -30,7 +30,7 @@ class _ApkImportPageState extends State<ApkImportPage> {
         'pickAndInspectApk',
       );
       if (!mounted) return;
-      setState(() => _apk = result);
+      if (result != null) setState(() => _apk = result);
     } on PlatformException catch (error) {
       if (!mounted) return;
       setState(() => _error = error.message ?? 'خواندن فایل APK ناموفق بود.');
