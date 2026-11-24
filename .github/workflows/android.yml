@@ -53,7 +53,9 @@ jobs:
         run: flutter analyze
 
       - name: Build APK
-        run: flutter build apk --debug --build-name=1.0.0 --build-number=1 -PappApplicationId=${{ matrix.application_id }}
+        env:
+          APP_APPLICATION_ID: ${{ matrix.application_id }}
+        run: flutter build apk --debug --build-name=1.0.0 --build-number=1
 
       - name: Rename APK
         run: cp build/app/outputs/flutter-apk/app-debug.apk ${{ matrix.output_name }}
